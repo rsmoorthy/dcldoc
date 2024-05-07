@@ -1,0 +1,150 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+site_name: DCL Doc
+theme:
+  name: material
+  custom_dir: overrides
+  icon:
+    logo: material/library
+  features:
+  - navigation.instant
+  - navigation.instance.prefetch
+  - navigation.instance.progress
+  - navigation.tracking
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.path
+  - navigation.top
+  - navigation.footer
+  - toc.follow
+  - toc.integrate
+  - search.suggest
+  - search.highlight
+  - search.share
+  - content.tabs.link
+  - content.code.copy
+  - content.code.select
+  - content.code.annotate
+  - content.tooltips
+  - announce.dismiss
+  - header.autohide
+  #- toc.integrate  (To integrate Navigation and TOC)
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      media: "(prefers-color-scheme: dark)"
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+extra_css:
+  - assets/stylesheets/custom.css
+extra:
+  consent:
+    title: Cookie consent
+    description: >-
+      I absolutely dont like this cookie consent thing. But right now for
+      fun sake, I am just adding it. Since everyone else does it.
+  generator: false  # Does not show the footer display Made with Material for MkDocs
+copyright: |
+  Copyright &copy; Moorthy RS (rsmoorthy@gmail.com) and &copy; BlueOptima Pvt Ltd
+
+plugins:
+  - privacy
+  - search
+  - blog
+  - tags
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - md_in_html
+  - def_list
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+          #format: !!python/name:mermaid2.fence_mermaid_custom
+  - pymdownx.tabbed:
+      alternate_style: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - tables
+  - footnotes
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - markdown_grid_tables
+extra_javascript:
+  - https://unpkg.com/mermaid@10.9.0/dist/mermaid.min.js
+nav:
+  - Home: "index.md"
+  - Getting started:
+    - "Quick start": "getting-started/index.md"
+    - "Authentication": "getting-started/authentication.md"
+    - "Containers": "getting-started/containers.md"
+    - "Services": "getting-started/services.md"
+    - "Volumes": "getting-started/volumes.md"
+    - "Replicas": "getting-started/replicas.md"
+    - "Ingress": "getting-started/ingress.md"
+    - "Configs": "getting-started/configs.md"
+    - "Global Services": "getting-started/global-services.md"
+    - "Resources": "getting-started/resources.md"
+    - Advanced:
+      - "Nodes": "getting-started/advanced/nodes.md"
+      - "EBS Volumes": "getting-started/advanced/ebs-volumes.md"
+      - "Sidecar Containers": "getting-started/advanced/sidecar-containers.md"
+      - "Troubleshooting": "getting-started/advanced/troubleshooting.md"
+      - "AWS Services": "getting-started/advanced/aws-services.md"
+  - Setup:
+    - "Installation": "setup/installation.md"
+    - "Configuration": "setup/configuration.md"
+    - "Authentication": "setup/authentication.md"
+    - "LDAP Configuration": "setup/ldap-configuration.md"
+    - "Service Accounts": "setup/service-accounts.md"
+    - "Authorisation Rules": "setup/auth-rules.md"
+    - "Quota Management": "setup/quota-mgmt.md"
+    - "Auto Scaling": "setup/auto-scaling.md"
+    - "Instance Types": "setup/instance-types.md"
+    - "Readying AMI": "setup/readying-ami.md"
+    - "NFS Setup": "setup/nfs-setup.md"
+    - "EBS Volumes": "setup/ebs-volumes.md"
+    - "Setup AWS services": "setup/aws-services.md"
+  - Guides:
+    - "Docker Swarm HA": "guides/docker-swarm-ha.md"
+  - Concepts:
+    - "Introduction": "concepts/introduction.md"
+    - "Why DCL": "concepts/why-dcl.md"
+    - "Docker on Swarm": "concepts/map-to-swarm.md"
+    - "Configs": "concepts/configs.md"
+    - "Volumes": "concepts/volumes.md"
+    - "Auto Scaling": "concepts/auto-scaling.md"
+    - "Ingress": "concepts/ingress.md"
+    - "Networks": "concepts/networks.md"
+  - Reference:
+    - "containers": "reference/containers.md"
+    - "networks": "reference/networks.md"
+  - Test:
+    - home.md
+  - Blog:
+    - blog/index.md
