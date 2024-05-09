@@ -5,7 +5,7 @@ you the flexibility of using the regular docker commands, where the containers a
 
 ## Docker vs Swarm vs DCL
 
-Specifically the interface to creating and managing containers (using `docker run` etc) is provided by DCL (as supposed to using only `docker service...`), so 
+Specifically the interface to creating and managing containers (using `docker run` etc) is provided by DCL (as supposed to using only `docker service...`), so
 that DCL can achieve the following:
 
 *    Allow docker users to directly exec / attach to containers running in the cluster (on another node) via `docker exec`
@@ -52,13 +52,36 @@ in the backend and DCL transforms and translates requests / responses of Contain
 |                        | `docker service create` equiv    | start <br> Responds with |                                 |
 |                        |                                  |service id as containerId |                                 |
 +------------------------+----------------------------------+--------------------------+---------------------------------+
+| docker ps              | DCL Sends request to all nodes   | Collates all responses   |                                 |
+|                        | with command `docker ps`         |                          |                                 |
+|                        |                                  |                          |                                 |
++------------------------+----------------------------------+--------------------------+---------------------------------+
+| docker exec / cp       | DCL identifies the node          | Proxies (tcp tunnels)    |                                 |
+|                        | issues the request to that node  | all comm between client  |                                 |
+|                        |                                  | and the node             |                                 |
++------------------------+----------------------------------+--------------------------+---------------------------------+
+| docker inspect / top   | DCL identifies the node          | Pass the info back as is |                                 |
+|        stats           | issues the request to that node  |                          |                                 |
+|                        |                                  |                          |                                 |
++------------------------+----------------------------------+--------------------------+---------------------------------+
+| docker stop            | Transforms to                    | Pass the info back as is | TBImpl                          |
+|                        | `service update --replicas 0`    |                          |                                 |
+|                        |                                  |                          |                                 |
++------------------------+----------------------------------+--------------------------+---------------------------------+
+| docker start           | If `replicas 0` then transforms  | Pass the info back as is | TBImpl                          |
+|                        | `service update --replicas 1`    |                          |                                 |
+|                        | Else NoOp                        |                          |                                 |
++------------------------+----------------------------------+--------------------------+---------------------------------+
 
 ## Limitations in DCL for Containers
 
-Creating and managing containers in DCL has few limitations. Essentially, DCL is a `docker proxy` for a Docker Swarm
-in the backend and DCL transforms and translates requests / responses of Containers to Swarm mode on the fly.
+Creating and managing containers in DCL has few limitations. As the DCL's back-end is a Docker Swarm cluster, mapping
+containers to services cannot be done for all use cases. So DCL limits several functionalities, when you access via
+docker container interface.
 
-So support for direct Containers (`docker container`) has limitations. Following is the summary of the limitations.
+If these limitations are an issue, you can switch over to a Docker Swarm interface (`docker service`, instead of `docker
+container`), which has better support than containers. If you use `docker compose`, you can switch over to the
+equivalent `docker stack`.
 
 +-----------------------------------------------------------+------------------------------------------------------------+
 |  Limitation                                               | Remarks                                                    |
