@@ -31,7 +31,7 @@ docker build --build-arg PREFIX=docs -t dcldoc .
 ```
 # Pull the latest
 docker stop dcldoc; docker rm dcldoc
-docker run --init -itd --name dcldoc -p 3000:3000 dcldoc:latest
+docker run --init -itd --name dcldoc --restart=always -p 3000:3000 dcldoc:latest
 ```
 
 
