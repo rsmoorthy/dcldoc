@@ -20,7 +20,10 @@ docker run -u $(id -u):$(id -g) -it --rm -p 8000:8000 -v ${PWD}:/docs mkdocs-mat
 ```
 docker run -u $(id -u):$(id -g) -it --rm -v ${PWD}:/docs mkdocs-material build
 
+# To build as root directory
 docker build -t dcldoc .
+# To build under docs/ url
+docker build --build-arg PREFIX=docs -t dcldoc .
 ```
 
 # Run and Use
