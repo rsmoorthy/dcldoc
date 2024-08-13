@@ -1,5 +1,6 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 site_name: DCL Doc
+site_url: https://dcl.stackpod.io/docs/
 theme:
   name: material
   custom_dir: overrides
@@ -95,6 +96,8 @@ markdown_extensions:
   - pymdownx.mark
   - pymdownx.tilde
   - markdown_grid_tables
+  - toc:
+      permalink: true
 extra_javascript:
   - https://unpkg.com/mermaid@10.9.0/dist/mermaid.min.js
 nav:
@@ -146,5 +149,7 @@ nav:
     - "networks": "reference/networks.md"
   - Test:
     - home.md
+  - FAQ:
+    - "Application FAQs": faq/apps.md
   - Blog:
     - blog/index.md
