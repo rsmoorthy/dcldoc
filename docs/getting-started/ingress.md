@@ -20,7 +20,7 @@ This page provides details on how an user could configure Ingress for their serv
 the syntax using docker compose/stack `yaml` file. The same examples via CLI will be more complex to use, while trying to
 use the yaml syntax (or using JSON syntax) and hence left out.
 
-Please refer to [Ingress Concepts](../concepts/ingress.md) and [Ingress Reference](../reference/ingress.md) for more details.
+Please refer to [Ingress Concepts](../concepts/ingress.md), [Ingress Reference](../reference/ingress.md) and [Setup details](../setup/ingress.md) for more details.
 
 
 ## HTTP Ingress Configuration

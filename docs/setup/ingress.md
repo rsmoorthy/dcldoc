@@ -1,7 +1,7 @@
 # Ingress Setup
 
 This section is meant as a guide for administrators to setup Ingress and related configurations in DCL and outside of
-DCL.
+DCL. Please refer to [Ingress Concepts](../concepts/ingress.md), [Ingress Getting Started](../getting-started/ingress.md) and [Ingress Reference](../reference/ingress.md) for more details.
 
 DCL actually uses `traefik` (for now) as the ingress proxy server. However, DCL wraps all the complexities (configuring
 `traefik` can be hard job) by simplifying the configurations with an opinionated view (and thus not exposing all
