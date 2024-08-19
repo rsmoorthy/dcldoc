@@ -128,11 +128,13 @@ nav:
     - "Authorisation Rules": "setup/auth-rules.md"
     - "Quota Management": "setup/quota-mgmt.md"
     - "Auto Scaling": "setup/auto-scaling.md"
+    - "Ingress": "setup/ingress.md"
     - "Instance Types": "setup/instance-types.md"
     - "Readying AMI": "setup/readying-ami.md"
     - "NFS Setup": "setup/nfs-setup.md"
     - "EBS Volumes": "setup/ebs-volumes.md"
     - "Setup AWS services": "setup/aws-services.md"
+    - "Just Test Link": "home.md"
   - Guides:
     - "Docker Swarm HA": "guides/docker-swarm-ha.md"
   - Concepts:
@@ -145,10 +147,9 @@ nav:
     - "Ingress": "concepts/ingress.md"
     - "Networks": "concepts/networks.md"
   - Reference:
-    - "containers": "reference/containers.md"
-    - "networks": "reference/networks.md"
-  - Test:
-    - home.md
+    - "Containers": "reference/containers.md"
+    - "Networks": "reference/networks.md"
+    - "Ingress": "reference/ingress.md"
   - FAQ:
     - "Application FAQs": faq/apps.md
   - Blog:

@@ -13,7 +13,6 @@ Docker accepts templated variables, where the values are substituted by Docker a
         ```
     === "docker compose"
         ```yaml
-        version: 3.7
         services:
           alpine:
             image: alpine
@@ -46,7 +45,6 @@ Docker accepts templated variables, where the values are substituted by Docker a
         ```
     === "docker compose"
         ```yaml
-        version: 3.7
         services:
           alpine:
             image: alpine
@@ -75,7 +73,6 @@ Docker accepts templated variables, where the values are substituted by Docker a
 ??? note "Large example with several templated variables"
     === "docker compose"
         ```yaml
-        version: 3.7
         services:
           alpine:
             image: alpine
