@@ -142,19 +142,19 @@ Please prefix `dcl.ingress.http.` against each of the config parameter shown.
 
 | Config    |    Description                 |
 | :-------: |  :--------------------------- |
-| `hostname`     | External DNS name(s) (outside the cluster) to reach this service |
-| `paths`     | URL path prefixes of a request to determine where the service should be sent to. Reg expression supported. |
-| `ClientIP`     | IP address of the Client, with a subnet mask. Note that if the requests are routed via proxy (such as ALB), this may not be helpful. |
-| `headers`     | Specific values of a HTTP header. Reg expression supported.
-| `priority`     | In specific cases, this will help set the priority of this service among other services, where the same `hostname` is used with different set of rules. |
-| `custom_rules`     | The default combination of the above config params use AND condition. To use a combination of AND / OR / NOT, you can use the `custom_rules` which defines the above configs under this with a combination of AND / OR / NOT.
+| [`hostname`](../reference/ingress.md#dclingresshttphostname)     | External DNS name(s) (outside the cluster) to reach this service |
+| [`paths`](../reference/ingress.md#dclingresshttppaths)     | URL path prefixes of a request to determine where the service should be sent to. Reg expression supported. |
+| [`ClientIP`](../reference/ingress.md#dclingresshttpclientip)     | IP address of the Client, with a subnet mask. Note that if the requests are routed via proxy (such as ALB), this may not be helpful. |
+| [`headers`](../reference/ingress.md#dclingresshttpheaders)     | Specific values of a HTTP header. Reg expression supported.
+| [`priority`](../reference/ingress.md#dclingresshttppriority)     | In specific cases, this will help set the priority of this service among other services, where the same `hostname` is used with different set of rules. |
+| [`custom_rules`](../reference/ingress.md#dclingresshttpcustom_rules)     | The default combination of the above config params use AND condition. To use a combination of AND / OR / NOT, you can use the `custom_rules` which defines the above configs under this with a combination of AND / OR / NOT.
 
 To configure the port / scheme of the service itself, the following parameters are available:
 
 | Config    |    Description                 |
 | :-------: |  :--------------------------- |
-| `port`     | Port number where the service is listening on |
-| `scheme`     | Whether it is listening on `http` or `https`
+| [`port`](../reference/ingress.md#dclingresshttpport)     | Port number where the service is listening on |
+| [`scheme`](../reference/ingress.md#dclingresshttpscheme)     | Whether it is listening on `http` or `https`
 
 With these configuration options, DCL Ingress supports the following features:
 
