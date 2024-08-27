@@ -87,6 +87,9 @@ labels:
 : {++optional++} This allows to specify priority among multiple services matching the same `hostname`. This will ensure
 that you can route path prefixes get priority over services that handle no path prefixes.
 
+: A higher number indicates a higher priority. So a rule with a priority of 100 will be considered first when compared
+with a rule with a priority of 10.
+
 : Default: If none provided, the priority is computed automatically based on the presence of `ClientIP`, `header`, `paths`
 in the same order. Presence of `ClientIP` adds a priority of `1000`, while presence of `header` adds a priority of `100`
 and presence of `paths` adds a priority of `10`. 

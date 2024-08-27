@@ -62,6 +62,8 @@ based on the path prefix used. Any access to www.example.com/api/ will route the
 access to www.example.com/docs/ will route the request to `docs-servicce` and the rest of the requests will go to
 `other-service` (the catch all).
 
+??? info "See [reference](https://dcl.stackpod.io/docs/reference/ingress/#dclingresshttppriority) on how priority is calculated automatically"
+
 ??? note "Example showing multiple services with auto calculated priority"
     === "docker compose"
         ```yaml
@@ -115,6 +117,8 @@ will give a lower priority for `other-service`, as it does not have `ClientIP` o
               dcl.ingress.http.hostname: www.example.com
               dcl.ingress.http.priority: 1
         ```
+
+??? info "A priority of 10 is higher than 1. A higher number indicates a higher priority. So a rule with a priority of 10 will be considered first when compared with a rule with a priority of 1."
 
 ### Blue / Green deployment and Testing Green
 
