@@ -135,6 +135,7 @@ specify the same hostname in each of the services, but you would then specify ot
 what type of requests should be sent to which service.
 
 DCL uses `traefik` under the hoods, but will likely support `caddy` / `nginx` in the future. DCL supports the following
+
 configuration options to route requests based on information present in the request itself.
 
 Please prefix `dcl.ingress.http.` against each of the config parameter shown.
@@ -156,6 +157,7 @@ To configure the port / scheme of the service itself, the following parameters a
 | `scheme`     | Whether it is listening on `http` or `https`
 
 With these configuration options, DCL Ingress supports the following features:
+
 *  Ability to access the service from outside the cluster using a separate DNS name and a separate scheme (usually https).
 *  Ability to load balance requests to different replicas of the same service.
 *  Ability to route requests to different services based on a combination of external DNS name, path prefix, HTTP headers and Client IP.
@@ -167,6 +169,7 @@ The default upgrade (to a new version of the service) method supported by Docker
 To accomplish this, you just update the image version using `docker service update` or via `docker compose up` or `docker stack update` and then Docker Swarm will create new containers, wait until they are healthy and then delete the old containers (with a short delay, if you want). This is all good for simple use cases, but has inherent issues.
 
 Issues:
+
 *  Rolling update does not allow you to gracefully terminate older services. There may be requests being handled in the older service, which may not have completed. The `--stop-grace-period` option is limited use only, which is the difference between normal kill request and forceful kill request.
 *  It does not allow you to do a proper blue / green deployment, which allows to test the new service before switching.
 *  If you have replicas, some applications may not want both versions of the services running at the same time during the rollout. You could control to some extent using `--update-parallelism 0` and `--update-order start-first`, but usually a better
@@ -219,7 +222,7 @@ service level load balancing. If each service has replicas, internally each serv
 load distribution. Please refer to the example [here](../getting-started/ingress.md#ingresslb-with-weighted-routing)
 
 You can accomplish a easy and elegant switch over after a blue / green deployment. Please refer to the example 
-[here](../getting-started/ingress.md##easy-bluegreen-deployment-with-zero-downtime)
+[here](../getting-started/ingress.md#easy-bluegreen-deployment-with-zero-downtime)
 
 ## Configuring TCP Ingress
 
