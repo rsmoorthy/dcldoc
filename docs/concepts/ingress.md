@@ -284,15 +284,15 @@ This is provided in detail at [Ingress Setup](../setup/ingress.md), but here is 
 * DCL could take each `hostname` (a FQDN, belonging to a domain) and create, update, delete the DNS records (like AWS Route53). This would happens at two stages: a) while creation/modification b) while deletion.
 * Or in the simplest use case, You can assign one or more `sub-domains` entirely to the DCL cluster. And pre-assign in the
 DNS via `wild card entry` for the `sub-domain`.
-  - For ex, if the decision is to use `dcl.example.com` as the sub-domain, then in the DNS, set a wild card 
-  entry `*.dcl.example.com` pointing to the ingress servers.
-  - This will DNS route all names with subdomain `dcl.example.com` to the cluster, via the ingress servers.
-  - Then the users can define any hostname like `mysvc.dcl.example.com`, and they are automatically routed by DNS to
-  the ingress servers and does not need regular book keeping in the DNS records.
-  - This is the preferred solution by DCL.
-  - If there is an actual service that needs to be exposed outside as `service.example.com`, the administrator then
-  could set a `CNAME` record for `service.example.com` pointing to `mysvc.dcl.example.com`, while the user could
-  then specify `mysvc.dcl.example.com` in the service spec.
+    - For ex, if the decision is to use `dcl.example.com` as the sub-domain, then in the DNS, set a wild card 
+      entry `*.dcl.example.com` pointing to the ingress servers.
+    - This will DNS route all names with subdomain `dcl.example.com` to the cluster, via the ingress servers.
+    - Then the users can define any hostname like `mysvc.dcl.example.com`, and they are automatically routed by DNS to
+      the ingress servers and does not need regular book keeping in the DNS records.
+    - This is the preferred solution by DCL.
+    - If there is an actual service that needs to be exposed outside as `service.example.com`, the administrator then
+      could set a `CNAME` record for `service.example.com` pointing to `mysvc.dcl.example.com`, while the user could
+      then specify `mysvc.dcl.example.com` in the service spec.
 
 ### Restricting further
 
