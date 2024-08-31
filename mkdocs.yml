@@ -153,6 +153,7 @@ nav:
       - "Containers": "reference/containers.md"
       - "Networks": "reference/networks.md"
       - "Ingress": "reference/ingress.md"
+      - "DCL Configuration": "reference/configuration.md"
   - FAQ:
       - "Application FAQs": faq/apps.md
   - Blog:
