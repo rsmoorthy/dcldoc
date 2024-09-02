@@ -17,6 +17,9 @@ To accomplish this, DCL also limits only certain specific storage methods and ig
 exhaustive features that Docker Swarm itself provides. DCL is your platform engineering tool, that gives you
 an opinionated set of access to storage.
 
+While this page provides a good overview of storage support, Please refer to [using examples](../getting-started/volumes.md) and
+[reference](../reference/volumes.md) for further details.
+
 ## Type of volumes
 
 DCL provides you with the following types of volumes:
@@ -83,7 +86,7 @@ a name associated with it.
 Ephemeral volumes are created as follows. For other examples, see [here](../getting-started/volumes.md).
 
 !!! example "How to use ephemeral volumes"
-    === "docker run -v"
+    === "docker run"
         ```console
         $ docker run -v /data alpine
         ```
@@ -132,7 +135,7 @@ DCL requires that you need to prefix the volume name by `local-` for all the vol
 DCL itself will still keep the prefix `local-`, while passing it to Docker.
 
 !!! example "How to use named ephemeral volumes"
-    === "docker run -v"
+    === "docker run"
         ```console
         $ docker run --name c1 -v local-vol1:/data --label dcl.constraint.node.hostname=mynode alpine
         ...
@@ -145,19 +148,18 @@ DCL itself will still keep the prefix `local-`, while passing it to Docker.
             The label [dcl.constraint.](../reference/containers.md) provides a mechanism for containers (unlike services) to provide the `constraints`.
     === "docker service create --mount"
         ```console
-        $ docker service create --name c1 --mount type=volume,name=local-vol1,target=/data --constraint node.hostname==mynode alpine
+        $ docker service create -td --name c1 --mount type=volume,name=local-vol1,target=/data --constraint node.hostname==mynode alpine
         ...
-        $ docker service create --name c2 --mount type=volume,name=local-vol1,target=/data --constraint node.hostname==mynode alpine
+        $ docker service create -td --name c2 --mount type=volume,name=local-vol1,target=/data --constraint node.hostname==mynode alpine
         ```
         !!! note "Life cycle and Quota"
             An ephemeral volume is created with a name as "local-vol1" on the remote node. Same volume "local-vol1" is shared between the two services `c1` and `c2`. 
             DCL will ensure that the volume is destroyed (as it implicitly passes `--rm`) after the last container / service is destroyed.
 
-!!! warning "This should be a special case"
-    You should only pursue this, only when you are very clear. You can easily get this wrong, where the two services could go into two different nodes, but you
-    would have relied on a shared volume. There will be no warnings or errors, if it so happens.
-
 ???+ warning "More corner cases can make this vulnerable"
+    You should only pursue this, only when you are very clear. You can easily get this wrong, where the two services could go into 
+    two different nodes, but you would have relied on a shared volume. There will be no warnings or errors, if it so happens.
+
     Suppose you create a service c1, and then c2, both using a volume `local-vol1`. And then delete c1 and recreate c1 again. In this example, the service c2
     is not removed and hence the volume `local-vol1` is still available. If the service c1 expects a clean volume, it might result in an error as the service
     c1 will get the volume with existing data.
@@ -172,13 +174,32 @@ DCL itself will still keep the prefix `local-`, while passing it to Docker.
 ??? bug "TODO - DCL needs to ensure a named volume is deleted after the last service exits"
     Right now, Docker Swarm does not seem to delete a named ephemeral volume. But does it for unnamed ephemeral volumes.
 
+### Ephemeral volumes on RAM
+
+This is another special case, where you want to mount RAM as a volume. You would do this possibly for:
+
+* Improved security. Where you can keep certain sensitive files, like keys, which will never accidentally be placed in any disk.
+* Some services like Elasticsearch relies on shared memory, which is nothing but `tmpfs`, that stores it in the RAM.
+
+This is usually implemented by Linux `tmpfs`, which uses RAM to store files in RAM. So, as such, any tmpfs that you use
+{==your quota accounts the total memory used (like `--limit-memory`) and all the TMPFS ephemeral volumes==}.
+
+!!! example "How to use ephemeral volumes using RAM"
+    === "docker run"
+        ```console
+        $ docker run --mount type=tmpfs,target=/mem alpine
+        ```
+        !!! note ""
+            An ephemeral volume on RAM is created, the default size of this volume is based on [`storage.ephemeral.tmpfs.defaultSize`](../reference/configuration.md#storageephimeraltmpfsdefaultsize). If that configuration is not present, then the size is taken to be 1MB.
+
+For other examples, please refer to [here](../getting-started/volumes.md).
+
 ## Persistent volumes
 
 You want volumes that persist than the life cycle of the services (like a database or any persistent storage). You want to have full control over when
 the data should be created and then destroyed, and is not tied to the services themselves (like an abrupt service restart or service upgrade or similar).
 
-You also want to have persistent volumes managed by security controls, authorisation rules and quota management, so you can create / remove and access volumes based on
-who has access to the volume.
+You also want to have persistent volumes managed by security controls, authorisation rules and quota management, so you can create / remove and access volumes based on who has access to the volume.
 
 DCL provides support for persistent volumes. It provides two different methods of persistent volumes:
 
@@ -210,7 +231,7 @@ Hence the end users need to provide only the following input to setup a NFS volu
 * An unique Volume name, that also indicates it is of type `NFS`
 * Size of the volume
 * (optional) user/group id of the root mount path (default will be `0:0`)
-* (optional) permissions of the root mount path (default will be `0755`)
+* (optional) mode of the root mount path (default will be `0755`)
 
 While the administrators are expected fill-in the rest of the information, in DCL's configuration:
 
@@ -220,7 +241,7 @@ While the administrators are expected fill-in the rest of the information, in DC
   - You could setup simple rules to allocate a separate NFS servers for specific users or purpose.  (Like production using a separate NFS server, if you wish so)
 
 DCL will create folders corresponding to volume names in the corresponding NFS server root path, when `docker volume create` is done, and it sets up quota, folder
-ownership and permissions. DCL will also update the labels for `volume` to store the meta data of the volume itself (like the owner, namespace etc)
+ownership and mode. DCL will also update the labels for `volume` to store the meta data of the volume itself (like the owner, namespace etc)
 
 When a service uses the `volume`, the volume is attached by the `dcl-nfs` docker volume plugin, that is installed on all the workers and manager nodes. The `dcl-nfs`
 will actually do the NFS mounting. If configured so, the `dcl-nfs` plugin will only mount a particular server only once, to reduce the amount of NFS mounts
@@ -233,7 +254,7 @@ A simple example is given below. Please see [here](../getting-started/volumes.md
     $ docker volume create \
         -o size=10M \
         -o owner=1000 \
-        -o permissions=0700 \
+        -o mode=0700 \
         nfs-vol1
     ...
     $ docker run --mount src=nfs-vol1,target=/data alpine 
@@ -243,7 +264,8 @@ A simple example is given below. Please see [here](../getting-started/volumes.md
 
 #### High level Implementation
 
-DCL accomplishes this by a Docker Volume Plugin `dcl-nfs` that needs to be installed on all the docker nodes, including the manager nodes. DCL automatically injects the `--driver dcl-nfs` option when it sees the volume name prefixed with `nfs-`. All the `opts` 
+DCL accomplishes this by a Docker Volume Plugin `dcl-nfs` that needs to be installed on all the docker nodes, including the manager nodes. 
+DCL automatically injects the `--driver dcl-nfs` option when it sees the volume name prefixed with `nfs-`. All the `opts` 
 (including `size`, `owner` etc) is defined by the `dcl-nfs` volume plugin.
 
 DCL automatically injects additional labels and opts, that is required for the `dcl-nfs` plugin on the node, to actually mount the volume.
@@ -261,7 +283,7 @@ Hence the end users need to provide only the following input to setup a AWS EBS 
 * An unique volume name,  that also indicates that is of type `awsebs`
 * Size of the volume
 * (optional) user/group id of the root mount path (default will be `0:0`)
-* (optional) permissions of the root mount path (default will be `0755`)
+* (optional) mode of the root mount path (default will be `0755`)
 * (optional) A snapshot name from which this volume should be cloned (default is none)
 * (optional) The AZ that this should be placed in, which is one of A, B, C, ... If none provided, it takes the value of
   [`storage.persistent.awsebs.defaultZone`](../reference/volumes.md#storagepersistentawsebsdefaultzone). The zone name is converted
@@ -270,7 +292,7 @@ Hence the end users need to provide only the following input to setup a AWS EBS 
 * (optional) The type of the volume. One of `gp2`, `gp3`, `st1`. The default is [`storage.persistent.awsebs.type`](../reference/configuration.md#storagepersistentawsebstype)
 * (optional) The max throughput of a gp3 volume, throughput is defined as MB/sec. Default is defined by the value of [`storage.persistent.awsebs.throughput`](../reference/configuration.md#storagepersistentawsebsthroughput)
 
-The administrators are expected to have created the setup before hand, so that appropriate permissions are in place for DCL to create
+The administrators are expected to have created the setup before hand, so that appropriate mode are in place for DCL to create
 EBS volumes and snapshot names are in place to clone from.
 
 It is important that if the EBS volume is in zone A, then a node in zone B or C cannot mount the volume. The service should get scheduled
@@ -304,7 +326,7 @@ A simple example is given below. Please see [here](../getting-started/volumes.md
         -o throughput=250 \
         awsebs-vol1
     ...
-    $ docker run --mount src=awsebs-vol1,target=/data alpine 
+    $ docker run --mount src=awsebs-vol1,target=/data -itd alpine 
     ...
     $ docker volume rm awsebs-vol1
     ```
@@ -334,14 +356,79 @@ This is a future feature, where DCL will automatically setup a RAID volume based
 improve High availability and protect against a single failure. This feature can also be helpful to have a RAID/LV volume that
 combines multiple EBS volumes to a single higher volume.
 
+## Host mounted volumes
+
+There may be cases, where you need to mount a path from the host filesystem directly into the container. This is what docker
+calls as `bind mounting`.
+
+Since this exposes higher vulnerability, this option is restricted. In most use cases, you may not need this and usually needed
+for platform engineers and administrators. This option is available to end users, only when the Auth rules allow you access to
+those paths, which can be mounted from host.
+
+Administrators need to allow this configuration in [auth rules](../setup/auth-rules.md) to have the requested paths validated. The
+configuration parameter is [`storage.hostmount.paths`](../setup/auth-rules.md#storagehostmountpaths). If the requested path
+is not present in the auth rules configurtion, then the request is denied, while creating the service.
+
+Users can use this in the usual, familiar ways of bind mounting:
+```console
+$ docker run --name c1 --mount type=bind,source=/etc/docker,target=/etc/docker alpine:latest
+```
+
+See [here](../getting-started/volumes.md) for more examples.
+
+
 ## Modifying Persistent Volumes
 
 It's often a requirement to modify certain aspects of persistent volumes like increasing / decreasing the size of the volume,
 or increasing/decreasing the throughput of the `awsebs` volume. Once created, many other parameters may not be modified, including
-`owner`, `permissions` etc.
+`owner`, `mode` etc.
 
 DCL allows you to modify the following parameters of a volume:
 
 For NFS volumes:
 
-* `size` - Can be increased or decreased. It actually sets the FS level quota on that volume. So if you decrease :> 
+* `size` - Can be increased. It actually sets the FS level quota on that volume. For simplistic reasons and easy management,
+  the size cannot be decreased. If you want to do, you can do it manually using the info provided in this [blog](blog/posts/validating-ext4-xfs-quotas.md)
+
+For AWS EBS volumes:
+
+* `size` - Can be increased. It actually increases the EBS volume size. The size cannot be decreased, as in most cases, AWS EBS does
+not allow to decrease size.
+* `throughput` - Can be increased or decreased for `gp3` volumes. It actually updates the EBS volume throughput. Please refer to [AWS EBS
+guides](https://docs.aws.amazon.com/ebs/latest/userguide/requesting-ebs-volume-modifications.html) on the impact of change in throughput and the time it takes to update.
+
+To modify the volume parameters, simply issue the `docker volume create` command with the same `volume name`, but with the modified
+parameters. If you want to modify, at least one of the parameters should be modified to have a different value.
+
+??? warning "docker command volume does not support update"
+    Please note that, we are forced to use `docker volume create` command again to update also, as `docker volume` does not support
+    `update` for non-cluster volumes. It is unfortunate to over use `docker volume create` for update also.
+
+    DCL takes care of verifying if the volume is already present and also checks if the `size` or `throughput` parameter provided
+    is different than the current one. If so, it takes care of modifying the parameters and responds to user, without ever talking
+    to Docker.
+
+??? example "Modifying persistent volumes"
+    === "NFS"
+    ```console
+    $ docker volume create -o size=10M nfs-vol1
+    $ docker run --name c1 --mount src=nfs-vol1,target=/data -itd alpine 
+    $ docker exec -it c1 sh
+    / # df -h | grep data
+    Filesystem                    Size      Used Available Use% Mounted on
+    :/nfs-vol1                   10.0M         0     10.0M   0% /data
+    $ # Later
+    $ docker volume create -o size=20M nfs-vol1
+    $ docker exec -it c1 sh
+    / # df -h | grep data
+    Filesystem                    Size      Used Available Use% Mounted on
+    :/nfs-vol1                   20.0M         0     20.0M   0% /data
+    ```
+
+??? warning "Compose does not work well with volume modifications"
+    Since DCL suggests to use `docker volume create` CLI command to change the volume size and throughput, using
+    Compose does not work well. As the `docker compose` checks to see if the volume is already created and if it
+    is, it won't issue the `docker volume create` CLI equivalent. Hence, if there are volume modifications,
+    you are forced to issue the CLI commands.
+
+DCL does not provide any mechanism for increasing ephemeral volumes.
