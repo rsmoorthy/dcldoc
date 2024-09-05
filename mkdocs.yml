@@ -55,16 +55,35 @@ extra:
     provider: google
     property: G-D6FV5H29MX
     feedback:
-      title: Was this page helpful?
+      title: Was this page helpful? Please rate this page.
       ratings:
-        - icon: material/emoticon-happy-outline
-          name: This page was helpful
+        - icon: material/emoticon-frown-outline
+          name: Very dissatisfied
           data: 1
           note: >-
-            Thanks for your feedback!
+            Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
+            or via [discussions](https://github.com/rsmoorthy/dcldoc/discussions)
         - icon: material/emoticon-sad-outline
-          name: This page could be improved
-          data: 0
+          name: Dissatisfied
+          data: 2
+          note: >-
+            Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
+            or via [discussions](https://github.com/rsmoorthy/dcldoc/discussions)
+        - icon: material/emoticon-neutral-outline
+          name: Neutral
+          data: 3
+          note: >-
+            Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
+            or via [discussions](https://github.com/rsmoorthy/dcldoc/discussions)
+        - icon: material/emoticon-happy-outline
+          name: Happy
+          data: 4
+          note: >-
+            Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
+            or via [discussions](https://github.com/rsmoorthy/dcldoc/discussions)
+        - icon: material/emoticon-excited-outline
+          name: Very helpful
+          data: 5
           note: >-
             Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
             or via [discussions](https://github.com/rsmoorthy/dcldoc/discussions)
