@@ -122,6 +122,8 @@ CLI general definition:
           -o mode=0700 \
           -o az=A \
           -o snapshot=db-snapshot-ason-lastweek \
+          -o type=gp3 \
+          -o throughput=128 \
           awsebs-vol1
         ```
 

@@ -51,6 +51,23 @@ extra:
       I absolutely dont like this cookie consent thing. But right now for
       fun sake, I am just adding it. Since everyone else does it.
   generator: false # Does not show the footer display Made with Material for MkDocs
+  analytics:
+    provider: google
+    property: G-D6FV5H29MX
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >-
+            Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
+            or via [discussions](https://github.com/rsmoorthy/dcldoc/discussions)
 copyright: |
   Copyright &copy; Moorthy RS (rsmoorthy@gmail.com) and &copy; BlueOptima Pvt Ltd
 

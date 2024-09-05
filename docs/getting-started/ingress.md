@@ -1,4 +1,4 @@
-# DCL Ingress
+# :fontawesome-solid-arrow-right-to-bracket: DCL Ingress
 
 The Docker Swarm networks, the internal overlay networks, are internal and not exposed to outside by default. DCL provides
 Ingress setup (using the underlying `traefik`), which can be used to connect to services inside the cluster, from the outside.
