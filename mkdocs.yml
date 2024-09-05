@@ -58,31 +58,31 @@ extra:
       title: Was this page helpful? Please rate this page.
       ratings:
         - icon: material/emoticon-frown-outline
-          name: Very dissatisfied
+          name: Confusing or Inadequate
           data: 1
           note: >-
             Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
             or via [discussions](https://github.com/rsmoorthy/dcldoc/discussions)
         - icon: material/emoticon-sad-outline
-          name: Dissatisfied
+          name: Page could be improved
           data: 2
           note: >-
             Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
             or via [discussions](https://github.com/rsmoorthy/dcldoc/discussions)
         - icon: material/emoticon-neutral-outline
-          name: Neutral
+          name: Just OK
           data: 3
           note: >-
             Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
             or via [discussions](https://github.com/rsmoorthy/dcldoc/discussions)
         - icon: material/emoticon-happy-outline
-          name: Happy
+          name: Very Helpful
           data: 4
           note: >-
             Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
             or via [discussions](https://github.com/rsmoorthy/dcldoc/discussions)
         - icon: material/emoticon-excited-outline
-          name: Very helpful
+          name: Awesome
           data: 5
           note: >-
             Thanks for your feedback! Please share specific feedback via [issues](https://github.com/rsmoorthy/dcldoc/issues)
@@ -92,6 +92,7 @@ copyright: |
 
 plugins:
   - privacy
+  - social
   - search
   - blog
   - tags

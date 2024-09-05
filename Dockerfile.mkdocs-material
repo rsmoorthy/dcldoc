@@ -1,3 +1,4 @@
 FROM squidfunk/mkdocs-material
 
-RUN pip3 install markdown-grid-tables
+RUN pip3 install markdown-grid-tables && \
+    pip3 install "mkdocs-material[imaging]"
