@@ -179,8 +179,7 @@ nav:
       - "Ingress": "setup/ingress.md"
       - "Instance Types": "setup/instance-types.md"
       - "Readying AMI": "setup/readying-ami.md"
-      - "NFS Setup": "setup/nfs-setup.md"
-      - "EBS Volumes": "setup/ebs-volumes.md"
+      - "Volumes": "setup/volumes.md"
       - "Setup AWS services": "setup/aws-services.md"
       - "Just Test Link": "home.md"
   - Guides:
